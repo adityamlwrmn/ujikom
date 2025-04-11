@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bento latihan</title>
+    <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Poiret+One);
+      @import url(https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.min.css);
+
+      body {
+        padding: 0;
+        margin: 0;
+      }
+
+      .bento_box {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1ch;
+        padding: 1ch;
+        min-block-size: 100vh;
+      }
+
+      .bento_container {
+        display: grid;
+        grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+        gap: 1ch;
+        min-height: inherit;
+        flex: 2 0 320px;
+      }
+
+      .bento_container[variant-1] {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        --bg: #2d2e2e;
+      }
+
+      .bento_item {
+        height: 100%;
+        width: 100%;
+        background-color: var(--bg);
+        grid-column: var(--columns, span 1);
+        grid-row: var(--rows, span 1);
+        border-radius: 1rem;
+        display: grid;
+        position: relative;
+        place-items: center;
+      }
+
+      /* PROFILE CARD START */
+      .card {
+        background: #fff;
+        border-radius: 4px;
+        box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.5);
+        max-width: 500px;
+        display: flex;
+        flex-direction: row;
+        border-radius: 25px;
+        position: relative;
+      }
+      .card h2 {
+        margin: 0;
+        padding: 0 1rem;
+      }
+      .card .title {
+        padding: 1rem;
+        text-align: right;
+        color: rgb(121, 121, 120);
+        font-weight: bold;
+        font-size: 25px;
+      }
+      .card .desc {
+        padding: 0.5rem 1rem;
+        font-size: 12px;
+      }
+      .card .actions {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        align-items: center;
+        padding: 0.5rem 1rem;
+      }
+      .card svg {
+        width: 85px;
+        height: 85px;
+        margin: 0 auto;
+      }
+
+      .img-avatar {
+        width: 80px;
+        height: 80px;
+        position: absolute;
+        border-radius: 50%;
+        border: 6px solid white;
+        background-image: linear-gradient(-60deg, #16a085 0%, #f4d03f 100%);
+        top: 15px;
+        left: 85px;
+      }
+
+      .card-text {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+      }
+
+      .title-total {
+        padding: 2.5em 1.5em 1.5em 1.5em;
+      }
+
+      path {
+        fill: white;
+      }
+
+      .img-portada {
+        width: 100%;
+      }
+
+      .portada {
+        width: 100%;
+        height: 100%;
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+        background-image: url("https://cdns.klimg.com/merdeka.com/i/w/news/2023/02/06/1518964/content_images/670x335/20230206104406-2-7-karakter-kartun-lucu-yang-kelakuannya-bikin-gemes-penonton-003-muhammad-farih-fanani.png");
+        background-position: bottom center;
+        background-size: cover;
+      }
+
+      button {
+        border: none;
+        background: none;
+        font-size: 24px;
+        color: #8bc34a;
+        cursor: pointer;
+        transition: 0.5s;
+        &:hover {
+          color: #4caf50;
+          transform: rotate(22deg);
+        }
+      }
+
+      .wrapper {
+        height: 100vh;
+        display: grid;
+        place-items: center;
+      }
+
+      .typing-demo {
+        width: 12ch;
+        animation: typing 2s steps(22), blink 0.5s step-end infinite alternate;
+        white-space: nowrap;
+        overflow: hidden;
+        border-right: 3px solid;
+        font-family: monospace;
+        font-size: 18px;
+      }
+
+      @keyframes typing {
+        from {
+          width: 0;
+        }
+      }
+
+      @keyframes blink {
+        50% {
+          border-color: transparent;
+        }
+      }
+      /* PROFILE CARD END */
+      /* CHECKBOX  START */
+      .checkbox-wrapper-5 .check {
+        --size: 40px;
+
+        position: relative;
+        background: linear-gradient(90deg, #f19af3, #f099b5);
+        line-height: 0;
+        perspective: 400px;
+        font-size: var(--size);
+      }
+
+      .checkbox-wrapper-5 .check input[type="checkbox"],
+      .checkbox-wrapper-5 .check label,
+      .checkbox-wrapper-5 .check label::before,
+      .checkbox-wrapper-5 .check label::after,
+      .checkbox-wrapper-5 .check {
+        appearance: none;
+        display: inline-block;
+        border-radius: var(--size);
+        border: 0;
+        transition: 0.35s ease-in-out;
+        box-sizing: border-box;
+        cursor: pointer;
+      }
+
+      .checkbox-wrapper-5 .check label {
+        width: calc(2.2 * var(--size));
+        height: var(--size);
+        background: #d7d7d7;
+        overflow: hidden;
+      }
+
+      .checkbox-wrapper-5 .check input[type="checkbox"] {
+        position: absolute;
+        z-index: 1;
+        width: calc(0.8 * var(--size));
+        height: calc(0.8 * var(--size));
+        top: calc(0.1 * var(--size));
+        left: calc(0.1 * var(--size));
+        background: linear-gradient(45deg, #dedede, #ffffff);
+        box-shadow: 0 6px 7px rgba(0, 0, 0, 0.3);
+        outline: none;
+        margin: 0;
+      }
+
+      .checkbox-wrapper-5 .check input[type="checkbox"]:checked {
+        left: calc(1.3 * var(--size));
+      }
+
+      .checkbox-wrapper-5 .check input[type="checkbox"]:checked + label {
+        background: transparent;
+      }
+
+      .checkbox-wrapper-5 .check label::before,
+      .checkbox-wrapper-5 .check label::after {
+        content: "· ·";
+        position: absolute;
+        overflow: hidden;
+        left: calc(0.15 * var(--size));
+        top: calc(0.5 * var(--size));
+        height: var(--size);
+        letter-spacing: calc(-0.04 * var(--size));
+        color: #9b9b9b;
+        font-family: "Times New Roman", serif;
+        z-index: 2;
+        font-size: calc(0.6 * var(--size));
+        border-radius: 0;
+        transform-origin: 0 0 calc(-0.5 * var(--size));
+        backface-visibility: hidden;
+      }
+
+      .checkbox-wrapper-5 .check label::after {
+        content: "●";
+        top: calc(0.65 * var(--size));
+        left: calc(0.2 * var(--size));
+        height: calc(0.1 * var(--size));
+        width: calc(0.35 * var(--size));
+        font-size: calc(0.2 * var(--size));
+        transform-origin: 0 0 calc(-0.4 * var(--size));
+      }
+
+      .checkbox-wrapper-5 .check input[type="checkbox"]:checked + label::before,
+      .checkbox-wrapper-5 .check input[type="checkbox"]:checked + label::after {
+        left: calc(1.55 * var(--size));
+        top: calc(0.4 * var(--size));
+        line-height: calc(0.1 * var(--size));
+        transform: rotateY(360deg);
+      }
+
+      .checkbox-wrapper-5 .check input[type="checkbox"]:checked + label::after {
+        height: calc(0.16 * var(--size));
+        top: calc(0.55 * var(--size));
+        left: calc(1.6 * var(--size));
+        font-size: calc(0.6 * var(--size));
+        line-height: 0;
+      }
+      /* CHECKBOX  END */
+
+      :root {
+        --num: 0;
+        /* fungsinya sebagai nilai default suhu */
+      }
+      .bar_container {
+        width: 100%;
+        min-height: 50vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 80px 100px;
+        overflow: hidden;
+        background: #cfd1e167;
+        box-sizing: border-box;
+      }
+      .bar_box {
+        position: relative;
+        width: 240px;
+        height: 300px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .bar_box::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 20px;
+        height: 100%;
+        background: linear-gradient(#fff, #fff, #e3e3e3);
+        filter: blur(1px);
+        z-index: 1;
+      }
+
+      .bar_box::after {
+        content: "";
+        position: absolute;
+        top: 1px;
+        right: -1px;
+        width: 20px;
+        height: 100%;
+        background: #9d9d9d;
+        filter: blur(1px);
+        z-index: 1;
+      }
+
+      .bar_box .bar_shadow {
+        position: absolute;
+        width: 100%;
+        height: 50%;
+        background: #eee;
+      }
+
+      .bar_box .bar_shadow::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: calc(100% + 5px);
+        width: 100%;
+        height: 200%;
+        background: linear-gradient(rgba(0, 0, 0, 0.075), transparent);
+        transform: skewX(45deg);
+      }
+
+      .bar_box .bar_shadow::after {
+        content: "";
+        position: absolute;
+        bottom: -200%;
+        left: calc(100% + 15px);
+        width: 100%;
+        height: 200%;
+        background: linear-gradient(rgba(0, 0, 0, 0.075), transparent);
+        transform: skewX(45deg);
+      }
+
+      .bar_box .bar_content {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(#dbdae1, #a3aaba);
+        box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1),
+          15px 15px 15px rgba(0, 0, 0, 0.1), 20px 20px 20px rgba(0, 0, 0, 0.1),
+          50px 50px 50px rgba(0, 0, 0, 0.1), inset 3px 3px 2px #fff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .bar_box .bar_content .bar_percent {
+        position: relative;
+        width: 150px;
+        height: 150px;
+      }
+
+      .bar_box .bar_content .bar_percent::before {
+        content: attr(data-text);
+        position: absolute;
+        inset: 20px;
+        background: #555;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        font-size: 1.75rem;
+        letter-spacing: 0.1rem;
+        text-transform: uppercase;
+      }
+
+      .bar_box .bar_content .bar_percent svg {
+        position: relative;
+        width: 150px;
+        height: 150px;
+        transform: rotate(270deg);
+      }
+
+      .bar_box .bar_content .bar_percent svg circle {
+        width: 100%;
+        height: 100%;
+        fill: transparent;
+        stroke-width: 3;
+        stroke: rgba(0, 0, 0, 0.05);
+        transform: translate(5px, 5px);
+      }
+
+      .bar_box .bar_content .bar_percent svg circle:nth-child(2) {
+        stroke: #555;
+        stroke-dasharray: 440;
+        stroke-dashoffset: calc(440 - (440 * var(--num)) / 100);
+        opacity: 0;
+        animation: fadeIn 1s linear forwards;
+        animation-delay: 2.5s;
+      }
+
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      .bar_box .bar_content .bar_percent .bar_dot {
+        position: absolute;
+        inset: 5px;
+        z-index: 10;
+        animation: animateDot 2s linear forwards;
+      }
+
+      @keyframes animateDot {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(calc(3.6deg * var(--num)));
+        }
+      }
+
+      .bar_box .bar_content .bar_percent .bar_dot::before {
+        content: "";
+        position: absolute;
+        top: -7px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 14px;
+        height: 14px;
+        background: #555;
+        border-radius: 50%;
+      }
+
+      .bar_box .bar_content .bar_number {
+        position: relative;
+        inset: 0;
+        opacity: 0;
+        animation: fadeIn 1s linear forwards;
+        animation-delay: 2.5s;
+      }
+
+      .bar_box .bar_content .bar_number h2 {
+        font-size: 2.5rem;
+        color: #555;
+      }
+
+      .bar_box .bar_content .bar_number h2 span {
+        font-weight: 300;
+        font-size: 1.5rem;
+      }
+
+      /* 20px: 20px; */
+
+      body {
+        font-family: Poiret One;
+      }
+      .widget {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        display: flex;
+        height: 300px;
+        width: 600px;
+        transform: translate(-50%, -50%);
+        flex-wrap: wrap;
+        cursor: pointer;
+        border-radius: 20px;
+        box-shadow: 0 27px 55px 0 rgba(0, 0, 0, 0.3),
+          0 17px 17px 0 rgba(0, 0, 0, 0.15);
+      }
+
+      .weatherIcon {
+        flex: 1 100%;
+        height: 60%;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        background: #fafafa;
+        font-family: weathericons;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        font-size: 100px;
+      }
+      i {
+        padding-top: 30px;
+      }
+
+      .weatherInfo {
+        flex: 0 0 70%;
+        height: 40%;
+        background: #080705;
+        border-bottom-left-radius: 20px;
+        display: flex;
+        align-items: center;
+        color: white;
+      }
+
+      .temperature {
+        flex: 0 0 40%;
+        width: 100%;
+        font-size: 65px;
+        display: flex;
+        justify-content: space-around;
+      }
+
+      .description {
+        flex: 0 60%;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+      }
+
+      .weatherCondition {
+        text-transform: uppercase;
+        font-size: 35px;
+        font-weight: 100;
+      }
+
+      .location {
+        font-size: 15px;
+      }
+
+      .humid {
+        flex: 0 0 30%;
+        height: 40%;
+        background: #70c1b3;
+        border-bottom-right-radius: 20px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        color: white;
+        font-size: 30px;
+        font-weight: 800;
+      }
+
+      p {
+        position: fixed;
+        bottom: 0%;
+        right: 2%;
+      }
+      a {
+        text-decoration: none;
+        color: #e4d6a7;
+        font-size: 10px;
+      }
+      .widget_container {
+        padding: 0;
+        margin: 150px auto;
+        height: 100px;
+        width: 600px;
+      }
+
+      .quote_container {
+    font-family: sans-serif; /* Font default untuk elemen lainnya */
+  }
+
+  .quote_container::after {
+    content: "Bismillahirrahmanirrahim";
+    color: #d7d7d7;
+    display: block;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    font-size: 2rem; /* Atur ukuran font sesuai kebutuhan */
+    margin-top: 10px;
+  }
+  .quote_container2::after {
+    content: "Alhamdulillah hirobbil alamin";
+    color: #d7d7d7;
+    display: block;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    font-size: 2rem; /* Atur ukuran font sesuai kebutuhan */
+    margin-top: 10px;
+  }
+    </style>
+  </head>
+  <body>
+    <main class="bento_box">
+      <div class="bento_container" variant-1>
+        <div class="bento_item" style="--rows: span 2; --columns: span 1">
+          <div class="checkbox-wrapper-5">
+            <div class="check">
+              <input id="checkbox-1" type="checkbox" onclick="toggleLED()" />
+              <label for="checkbox-1"></label>
+            </div>
+          </div>
+          <div class="checkbox-wrapper-5">
+            <div class="check">
+              <input id="checkbox-2" type="checkbox" onclick="toggleLED()" />
+              <label for="checkbox-2"></label>
+            </div>
+          </div>
+          <div class="checkbox-wrapper-5">
+            <div class="check">
+              <input id="checkbox-3" type="checkbox" onclick="toggleLED()" />
+              <label for="checkbox-3"></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="bento_item" style="--rows: span 2; --columns: span 1">
+          <div class="bar_container">
+            <div class="bar_box">
+              <div class="bar_shadow"></div>
+              <div class="bar_content">
+                <div class="bar_percent" data-text="jarak" style="--num: 0">
+                  <div class="bar_dot"></div>
+                  <svg>
+                    <circle cx="70" cy="70" r="70"></circle>
+                    <circle cx="70" cy="70" r="70"></circle>
+                  </svg>
+                </div>
+                <div class="bar_number">
+                  <h2 id="nilaisuhu">0 <span>C</span></h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bento_item" style="--rows: 7; --columns: span 4">
+          <div class="quote_container2">
+            <small class="quote_author">
+            </small>
+          </div>
+        </div>
+
+        <div class="bento_item" style="--rows: span 2; --columns: span 4">
+          <div class="widget_container">
+            <article class="widget">
+              <div class="weatherIcon" id="weatherIcon">
+                <i class=""></i>
+              </div>
+              <div class="weatherInfo">
+                <div class="temperature" id="tempID">
+                  <span>temperature error</span>
+                </div>
+                <div class="description">
+                  <div class="weatherCondition" id="conditionID">
+                    kondisi error
+                  </div>
+                  <div class="location" id="locationID">Coblong, Bandung</div>
+                </div>
+              </div>
+              <div class="humid" id="humidID">kelembapan error</div>
+            </article>
+          </div>
+        </div>
+
+        <div class="bento_item" style="--rows: 1; --columns: 1/4">
+            <div class="quote_container">
+              <small class="quote_author">
+              </small>
+            </div>
+          </div>
+
+        <div class="bento_item" style="--rows: 2/5; --columns: 1/4">
+          <center>
+            <div class="card">
+              <div class="card-text">
+                <div class="portada"></div>
+                <div class="title-total">
+                  <div class="title">Aditya Mulawarman</div>
+                  <div class="typing-demo">mau jadi bos</div>
+
+                  <div class="desc">Jangan lupa bahagia hhe😁😁</div>
+                  <div class="actions">
+                    <button><i class="far fa-heart"></i></button>
+                    <button><i class="far fa-envelope"></i></button>
+                    <button><i class="fas fa-user-friends"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </center>
+        </div>
+      </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        onValue,
+        set,
+      } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+
+      // Konfigurasi Firebase
+      const firebaseConfig = {
+        apiKey: "AIzaSyCUhFb4_JivisOL814sTR5Pt0M9xJXAKSQ",
+        authDomain: "fir-arduino-2e8a9.firebaseapp.com",
+        databaseURL: "https://fir-arduinoled-e2f58-default-rtdb.asia-southeast1.firebasedatabase.app/",
+        projectId: "fir-arduino-2e8a9",
+        storageBucket: "fir-arduino-2e8a9.firebasestorage.app",
+        messagingSenderId: "807998207940",
+        appId: "1:807998207940:web:eee3bfe45d5339c7801691",
+      };
+
+      // Inisialisasi Firebase
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+      const ledRef = ref(db, "dataLED");
+      const dhtRef = ref(db, "dataDHT");
+      const usRef = ref(db, "Sensor");
+
+      // Fungsi untuk mengubah teks berdasarkan suhu
+      function updateWeatherCondition(tempValue) {
+        const conditionElement = document.getElementById("conditionID");
+        if (!conditionElement) return;
+
+        if (tempValue <= 0) {
+          conditionElement.textContent = "Sangat Dingin";
+        } else if (tempValue > 0 && tempValue < 19) {
+          conditionElement.textContent = "Dingin";
+        } else if (tempValue >= 20 && tempValue < 31) {
+          conditionElement.textContent = "Sedang";
+        } else {
+          conditionElement.textContent = "Panas";
+        }
+      }
+
+      // Fungsi untuk memperbarui tampilan suhu dan kelembaban
+      function updateWeather(tempValue, humidValue) {
+        const temperatureElement = document.getElementById("tempID");
+        const humidElement = document.getElementById("humidID");
+        const iconElement = document.getElementById("weatherIcon");
+
+        if (!temperatureElement || !humidElement || !iconElement) return;
+
+        temperatureElement.innerHTML = `${tempValue}°`;
+        humidElement.textContent = `${humidValue}%`;
+
+        let iconClass = "wi wi-tornado";
+        if (humidValue < 20) {
+          iconClass = "wi wi-day-sunny";
+        } else if (humidValue <= 50) {
+          iconClass = "wi wi-day-fog";
+        } else {
+          iconClass = "wi wi-day-thunderstorm";
+        }
+
+        iconElement.innerHTML = `<i class="${iconClass}"></i>`;
+
+        updateWeatherCondition(tempValue);
+      }
+
+      // Mendengarkan perubahan status LED
+      onValue(ledRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const led = snapshot.val();
+          Object.keys(led).forEach((key, index) => {
+            const checkbox = document.getElementById(`checkbox-${index + 1}`);
+            if (checkbox) {
+              checkbox.checked = led[key] === 1;
+            }
+          });
+          console.log("Status LED berubah:", led);
+        } else {
+          console.log("Data LED tidak ditemukan");
+        }
+      });
+
+      // Mendengarkan perubahan sensor DHT
+      onValue(
+        dhtRef,
+        (snapshot) => {
+          if (snapshot.exists()) {
+            const data = snapshot.val();
+            let temperature = data.t;
+            let humidity = data.h;
+            console.log("Temperature update:", temperature);
+            console.log("Humidity update:", humidity);
+            updateWeather(temperature, humidity);
+          } else {
+            console.log("Data DHT tidak ditemukan");
+          }
+        },
+        (error) => {
+          console.log("Error membaca data DHT:", error);
+        }
+      );
+
+      // Mendengarkan perubahan sensor Ultrasonic
+      onValue(usRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          console.log("Jarak berubah:", data.jarak);
+
+          const barPercentElement = document.querySelector(".bar_percent");
+          if (barPercentElement) {
+            barPercentElement.style.setProperty("--num", data.jarak);
+          }
+
+          const percentageElement = document.getElementById("nilaisuhu");
+          if (percentageElement) {
+            percentageElement.textContent = `${data.jarak} Cm`;
+          }
+        } else {
+          console.log("Data Ultrasonic tidak ditemukan");
+        }
+      });
+
+
+      // Fungsi untuk mengontrol LED dari checkbox
+      window.toggleLED = () => {
+        const ledState = [1, 2, 3].map((i) =>
+          document.getElementById(`checkbox-${i}`).checked ? 1 : 0
+        );
+
+        set(ledRef, {
+          led1: ledState[0],
+          led2: ledState[1],
+          led3: ledState[2],
+        })
+          .then(() => console.log("LED state updated in Firebase"))
+          .catch(() => console.log("Gagal memperbarui status LED"));
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bento latihan</title>
+    <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Poiret+One);
+      @import url(https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.min.css);
+
+      body {
+        padding: 0;
+        margin: 0;
+      }
+
+      .bento_box {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1ch;
+        padding: 1ch;
+        min-block-size: 100vh;
+      }
+
+      .bento_container {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Adjust to 2 columns */
+        gap: 1ch;
+        min-height: inherit;
+        flex: 2 0 320px;
+      }
+
+      .bento_item {
+        height: 100%;
+        width: 100%;
+        background-color: #2d2e2e;
+        border-radius: 1rem;
+        display: grid;
+        position: relative;
+        place-items: center;
+      }
+
+      /* Profile Card Styling */
+      .card {
+        background: #fff;
+        border-radius: 4px;
+        box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.5);
+        max-width: 500px;
+        display: flex;
+        flex-direction: row;
+        border-radius: 25px;
+        position: relative;
+      }
+
+      .card h2 {
+        margin: 0;
+        padding: 0 1rem;
+      }
+
+      .card .title {
+        padding: 1rem;
+        text-align: right;
+        color: rgb(121, 121, 120);
+        font-weight: bold;
+        font-size: 25px;
+      }
+
+      .card .desc {
+        padding: 0.5rem 1rem;
+        font-size: 12px;
+      }
+
+      .card .actions {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        align-items: center;
+        padding: 0.5rem 1rem;
+      }
+
+      .img-avatar {
+        width: 80px;
+        height: 80px;
+        position: absolute;
+        border-radius: 50%;
+        border: 6px solid white;
+        background-image: linear-gradient(-60deg, #16a085 0%, #f4d03f 100%);
+        top: 15px;
+        left: 85px;
+      }
+
+      .card-text {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+      }
+
+      .portada {
+        width: 100%;
+        height: 100%;
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+        background-image: url("https://cdns.klimg.com/merdeka.com/i/w/news/2023/02/06/1518964/content_images/670x335/20230206104406-2-7-karakter-kartun-lucu-yang-kelakuannya-bikin-gemes-penonton-003-muhammad-farih-fanani.png");
+        background-position: bottom center;
+        background-size: cover;
+      }
+
+      button {
+        border: none;
+        background: none;
+        font-size: 24px;
+        color: #8bc34a;
+        cursor: pointer;
+        transition: 0.5s;
+      }
+
+      /* Weather Widget Styling */
+      .widget {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        display: flex;
+        height: 300px;
+        width: 600px;
+        transform: translate(-50%, -50%);
+        flex-wrap: wrap;
+        cursor: pointer;
+        border-radius: 20px;
+        box-shadow: 0 27px 55px 0 rgba(0, 0, 0, 0.3), 0 17px 17px 0 rgba(0, 0, 0, 0.15);
+      }
+
+      .weatherIcon {
+        flex: 1 100%;
+        height: 60%;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        background: #fafafa;
+        font-family: weathericons;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        font-size: 100px;
+      }
+
+      .weatherInfo {
+        flex: 0 0 70%;
+        height: 40%;
+        background: #080705;
+        border-bottom-left-radius: 20px;
+        display: flex;
+        align-items: center;
+        color: white;
+      }
+
+      .temperature {
+        flex: 0 0 40%;
+        width: 100%;
+        font-size: 65px;
+        display: flex;
+        justify-content: space-around;
+      }
+
+      .description {
+        flex: 0 60%;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+      }
+
+      .weatherCondition {
+        text-transform: uppercase;
+        font-size: 35px;
+        font-weight: 100;
+      }
+
+      .location {
+        font-size: 15px;
+      }
+
+      .humid {
+        flex: 0 0 30%;
+        height: 40%;
+        background: #70c1b3;
+        border-bottom-right-radius: 20px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        color: white;
+        font-size: 30px;
+        font-weight: 800;
+      }
+
+      p {
+        position: fixed;
+        bottom: 0%;
+        right: 2%;
+      }
+      a {
+        text-decoration: none;
+        color: #e4d6a7;
+        font-size: 10px;
+      }
+
+      .quote_container {
+        font-family: sans-serif;
+      }
+
+      .quote_container::after {
+        content: "Fortis Fortuna Adiuvat☠️☠️";
+        display: block;
+        font-family: 'UnifrakturCook', Blackletter, serif;
+        font-size: 1.5rem;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="bento_box">
+      <div class="bento_container" variant-1>
+        <div class="bento_item">
+          <!-- Checkbox Section -->
+          <div class="checkbox-wrapper-5">
+            <div class="check">
+              <input id="checkbox-1" type="checkbox" onclick="toggleLED()" />
+              <label for="checkbox-1"></label>
+            </div>
+          </div>
+          <div class="checkbox-wrapper-5">
+            <div class="check">
+              <input id="checkbox-2" type="checkbox" onclick="toggleLED()" />
+              <label for="checkbox-2"></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="bento_item">
+          <!-- Bar Section -->
+          <div class="bar_container">
+            <div class="bar_box">
+              <div class="bar_shadow"></div>
+              <div class="bar_content">
+                <div class="bar_percent" data-text="jarak" style="--num: 0">
+                  <div class="bar_dot"></div>
+                  <svg>
+                    <circle cx="70" cy="70" r="70"></circle>
+                    <circle cx="70" cy="70" r="70"></circle>
+                  </svg>
+                </div>
+                <div class="bar_number">
+                  <h2 id="nilaisuhu">0 <span>C</span></h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bento_item">
+          <!-- Profile Card Section -->
+          <center>
+            <div class="card">
+              <div class="card-text">
+                <div class="portada"></div>
+                <div class="title-total">
+                  <div class="title">Aditya Mulawarman</div>
+                  <div class="typing-demo">mau jadi bos</div>
+                  <div class="desc">Jangan lupa bahagia hhe😁😁</div>
+                </div>
+              </div>
+            </div>
+          </center>
+        </div>
+
+        <div class="bento_item">
+          <!-- Weather Widget Section -->
+          <div class="widget_container">
+            <article class="widget">
+              <div class="weatherIcon" id="weatherIcon">
+                <i class=""></i>
+              </div>
+              <div class="weatherInfo">
+                <div class="temperature" id="tempID">
+                  <span>temperature error</span>
+                </div>
+                <div class="description">
+                  <div class="weatherCondition" id="conditionID">
+                    kondisi error
+                  </div>
+                  <div class="location" id="locationID">Coblong, Bandung</div>
+                </div>
+              </div>
+              <div class="humid" id="humidID">kelembapan error</div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </main>
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        onValue,
+        set,
+      } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+
+      // Konfigurasi Firebase
+      const firebaseConfig = {
+        apiKey: "AIzaSyCUhFb4_JivisOL814sTR5Pt0M9xJXAKSQ",
+        authDomain: "fir-arduino-2e8a9.firebaseapp.com",
+        databaseURL: "https://fir-arduinoled-e2f58-default-rtdb.asia-southeast1.firebasedatabase.app/",
+        projectId: "fir-arduino-2e8a9",
+        storageBucket: "fir-arduino-2e8a9.firebasestorage.app",
+        messagingSenderId: "807998207940",
+        appId: "1:807998207940:web:eee3bfe45d5339c7801691",
+      };
+
+      // Inisialisasi Firebase
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+      const ledRef = ref(db, "dataLED");
+      const dhtRef = ref(db, "dataDHT");
+      const usRef = ref(db, "Sensor");
+
+      // Fungsi untuk mengubah teks berdasarkan suhu
+      function updateWeatherCondition(tempValue) {
+        const conditionElement = document.getElementById("conditionID");
+        if (!conditionElement) return;
+
+        if (tempValue <= 0) {
+          conditionElement.textContent = "Sangat Dingin";
+        } else if (tempValue > 0 && tempValue < 19) {
+          conditionElement.textContent = "Dingin";
+        } else if (tempValue >= 20 && tempValue < 31) {
+          conditionElement.textContent = "Sedang";
+        } else {
+          conditionElement.textContent = "Panas";
+        }
+      }
+
+      // Fungsi untuk memperbarui tampilan suhu dan kelembaban
+      function updateWeather(tempValue, humidValue) {
+        const temperatureElement = document.getElementById("tempID");
+        const humidElement = document.getElementById("humidID");
+        const iconElement = document.getElementById("weatherIcon");
+
+        if (!temperatureElement || !humidElement || !iconElement) return;
+
+        temperatureElement.innerHTML = `${tempValue}°`;
+        humidElement.textContent = `${humidValue}%`;
+
+        let iconClass = "wi wi-tornado";
+        if (humidValue < 20) {
+          iconClass = "wi wi-day-sunny";
+        } else if (humidValue <= 50) {
+          iconClass = "wi wi-day-fog";
+        } else {
+          iconClass = "wi wi-day-thunderstorm";
+        }
+
+        iconElement.innerHTML = `<i class="${iconClass}"></i>`;
+
+        updateWeatherCondition(tempValue);
+      }
+
+      // Mendengarkan perubahan status LED
+      onValue(ledRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const led = snapshot.val();
+          Object.keys(led).forEach((key, index) => {
+            const checkbox = document.getElementById(`checkbox-${index + 1}`);
+            if (checkbox) {
+              checkbox.checked = led[key] === 1;
+            }
+          });
+          console.log("Status LED berubah:", led);
+        } else {
+          console.log("Data LED tidak ditemukan");
+        }
+      });
+
+      // Mendengarkan perubahan sensor DHT
+      onValue(
+        dhtRef,
+        (snapshot) => {
+          if (snapshot.exists()) {
+            const data = snapshot.val();
+            let temperature = data.t;
+            let humidity = data.h;
+            console.log("Temperature update:", temperature);
+            console.log("Humidity update:", humidity);
+            updateWeather(temperature, humidity);
+          } else {
+            console.log("Data DHT tidak ditemukan");
+          }
+        },
+        (error) => {
+          console.log("Error membaca data DHT:", error);
+        }
+      );
+
+      // Mendengarkan perubahan sensor Ultrasonic
+      onValue(usRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          console.log("Jarak berubah:", data.jarak);
+
+          const barPercentElement = document.querySelector(".bar_percent");
+          if (barPercentElement) {
+            barPercentElement.style.setProperty("--num", data.jarak);
+          }
+
+          const percentageElement = document.getElementById("nilaisuhu");
+          if (percentageElement) {
+            percentageElement.textContent = `${data.jarak} Cm`;
+          }
+        } else {
+          console.log("Data Ultrasonic tidak ditemukan");
+        }
+      });
+
+
+      // Fungsi untuk mengontrol LED dari checkbox
+      window.toggleLED = () => {
+        const ledState = [1, 2, 3].map((i) =>
+          document.getElementById(`checkbox-${i}`).checked ? 1 : 0
+        );
+
+        set(ledRef, {
+          led1: ledState[0],
+          led2: ledState[1],
+          led3: ledState[2],
+        })
+          .then(() => console.log("LED state updated in Firebase"))
+          .catch(() => console.log("Gagal memperbarui status LED"));
+      };
+    </script>
+  </body>
+</html>

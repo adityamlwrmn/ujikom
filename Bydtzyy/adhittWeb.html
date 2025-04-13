@@ -3,9 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bento latihan</title>
+    <title>UjiKom_byDtzy</title>
     <!-- Memuat font dari Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+    <!-- contoh dengan favicon.png -->
+<link rel="icon" href="am.jpg" type="image/png">
+
     <!-- Memuat file CSS eksternal -->
     <style>
             @import url(https://fonts.googleapis.com/css?family=Poiret+One);
@@ -580,6 +583,128 @@
     font-size: 2rem; /* Atur ukuran font sesuai kebutuhan */
     margin-top: 10px;
   }
+  /* From Uiverse.io by mahiatlinux */ 
+/* The switch - the box around the slider */
+.switch {
+  font-size: 17px;
+  position: relative;
+  display: inline-block;
+  width: 5em;
+  height: 2.5em;
+  user-select: none;
+}
+
+/* Hide default HTML checkbox */
+.switch .cb {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.toggle {
+  position: absolute;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  background-color: #1a1a1a;
+  border-radius: 0.1em;
+  transition: 0.4s;
+  text-transform: uppercase;
+  font-weight: 700;
+  overflow: hidden;
+  box-shadow:
+    -0.3em 0 0 0 #1a1a1a,
+    -0.3em 0.3em 0 0 #1a1a1a,
+    0.3em 0 0 0 #1a1a1a,
+    0.3em 0.3em 0 0 #1a1a1a,
+    0 0.3em 0 0 #1a1a1a;
+}
+
+.toggle > .left {
+  position: absolute;
+  display: flex;
+  width: 50%;
+  height: 88%;
+  background-color: #2c2c2c;
+  color: #f3f3f3;
+  left: 0;
+  bottom: 0;
+  align-items: center;
+  justify-content: center;
+  transform-origin: right;
+  transform: rotateX(10deg);
+  transform-style: preserve-3d;
+  transition: all 150ms;
+}
+
+.left::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: #3a3a3a;
+  transform-origin: center left;
+  transform: rotateY(90deg);
+}
+
+.left::after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: #1e1e1e;
+  transform-origin: center bottom;
+  transform: rotateX(90deg);
+}
+
+.toggle > .right {
+  position: absolute;
+  display: flex;
+  width: 50%;
+  height: 88%;
+  background-color: #2c2c2c;
+  color: #3a3a3a;
+  right: 1px;
+  bottom: 0;
+  align-items: center;
+  justify-content: center;
+  transform-origin: left;
+  transform: rotateX(10deg) rotateY(-45deg);
+  transform-style: preserve-3d;
+  transition: all 150ms;
+}
+
+.right::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: #3a3a3a;
+  transform-origin: center right;
+  transform: rotateY(-90deg);
+}
+
+.right::after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: #1e1e1e;
+  transform-origin: center bottom;
+  transform: rotateX(90deg);
+}
+
+.switch input:checked + .toggle > .left {
+  transform: rotateX(10deg) rotateY(45deg);
+  color: #3a3a3a;
+}
+
+.switch input:checked + .toggle > .right {
+  transform: rotateX(10deg) rotateY(0deg);
+  color: #6b96e0;
+}
+
     </style>
   </head>
   <body>
@@ -589,26 +714,33 @@
         <!-- Bento item pertama untuk checkbox LED -->
         <div class="bento_item" style="--rows: span 2; --columns: span 1">
           <!-- Checkbox pertama untuk mengontrol LED -->
-          <div class="checkbox-wrapper-5">
-            <div class="check">
-              <input id="checkbox-1" type="checkbox" onclick="toggleLED()" />
-              <label for="checkbox-1"></label>
-            </div>
-          </div>
+          <!-- From Uiverse.io by mahiatlinux --> 
+          <label class="switch">
+            <input id="checkbox-1" class="cb" type="checkbox" />
+            <span class="toggle">
+              <span class="left">off</span>
+              <span class="right">on</span>
+            </span>
+          </label>
+
           <!-- Checkbox kedua untuk mengontrol LED -->
-          <div class="checkbox-wrapper-5">
-            <div class="check">
-              <input id="checkbox-2" type="checkbox" onclick="toggleLED()" />
-              <label for="checkbox-2"></label>
-            </div>
-          </div>
+          <!-- From Uiverse.io by mahiatlinux --> 
+          <label class="switch">
+            <input id="checkbox-2" class="cb" type="checkbox" />
+            <span class="toggle">
+              <span class="left">off</span>
+              <span class="right">on</span>
+            </span>
+          </label>
+
           <!-- Checkbox ketiga untuk mengontrol LED -->
-          <div class="checkbox-wrapper-5">
-            <div class="check">
-              <input id="checkbox-3" type="checkbox" onclick="toggleLED()" />
-              <label for="checkbox-3"></label>
-            </div>
-          </div>
+          <label class="switch">
+            <input id="checkbox-3" class="cb" type="checkbox" />
+            <span class="toggle">
+              <span class="left">off</span>
+              <span class="right">on</span>
+            </span>
+          </label>
         </div>
 
         <!-- Bento item kedua untuk menampilkan suhu dan kelembaban -->
@@ -669,11 +801,11 @@
 
         <!-- Bento item kelima untuk menampilkan quote kecil -->
         <div class="bento_item" style="--rows: 1; --columns: 1/4">
-            <div class="quote_container">
-              <small class="quote_author">
-              </small>
-            </div>
+          <div class="quote_container">
+            <small class="quote_author">
+            </small>
           </div>
+        </div>
 
         <!-- Bento item keenam untuk menampilkan profil pengguna -->
         <div class="bento_item" style="--rows: 2/5; --columns: 1/4">
@@ -845,6 +977,14 @@
           .then(() => console.log("LED state updated in Firebase"))
           .catch(() => console.log("Gagal memperbarui status LED"));
       };
+
+      // Menambahkan event listener pada checkbox
+      document.querySelectorAll('.cb').forEach((checkbox, index) => {
+        checkbox.addEventListener('change', () => {
+          // Ketika status checkbox berubah, update LED status di Firebase
+          window.toggleLED();
+        });
+      });
     </script>
   </body>
 </html>

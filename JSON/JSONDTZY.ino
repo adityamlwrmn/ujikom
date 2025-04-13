@@ -7,9 +7,9 @@
 /* Use the following instance for Test Mode (No Authentication) */
 Firebase fb(REFERENCE_URL);
 
-#define ledPin1     D2
-#define ledPin2     D3
-#define ledPin3     D5
+#define ledPin1     D1
+#define ledPin2     D2
+#define ledPin3     D3
 #define triggerPin  D7
 #define echoPin     D6
 #define DHTPIN D5  

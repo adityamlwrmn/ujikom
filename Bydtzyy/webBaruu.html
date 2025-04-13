@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sensor Monitor & LED Control</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(135deg, #e3a20c, #9c1a0e);
+        color: #fff;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      h1 {
+        margin-bottom: 20px;
+      }
+
+      .sensor-wrapper,
+      .led-wrapper {
+        display: flex;
+        justify-content: space-evenly;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+      }
+
+      .card-box {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        padding: 20px;
+        width: 300px;
+        min-height: 240px;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .sensor-data {
+        font-size: 1.2em;
+        margin: 10px 0;
+      }
+
+      .led-wrapper {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+      }
+
+      .toggle-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+      }
+
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.4s;
+        border-radius: 34px;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+      }
+
+      input:checked + .slider {
+        background-color: #4cd964;
+      }
+
+      input:checked + .slider:before {
+        transform: translateX(26px);
+      }
+
+      .label-text {
+        display: block;
+        text-align: center;
+        margin-top: 8px;
+        font-size: 0.9em;
+      }
+
+      #connectButton {
+        background-color: #ffcb05;
+        color: #1e3c72;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1em;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      #connectButton:hover {
+        background-color: #ffd940;
+        transform: scale(1.05);
+      }
+
+      @media (max-width: 800px) {
+        .sensor-wrapper {
+          flex-direction: column;
+          align-items: center;
+        }
+        .led-wrapper {
+          flex-direction: column;
+          align-items: center;
+        }
+      }
+
+      @media (max-width: 400px) {
+        .card-box {
+          width: 90%;
+        }
+
+        .switch {
+          width: 50px;
+          height: 30px;
+        }
+
+        .slider:before {
+          height: 22px;
+          width: 22px;
+        }
+      }
+      .card-box img {
+        width: 100%;
+        height: auto;
+        max-height: 170px;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Sensor Monitor & LED Control</h1>
+
+    <!-- Introduction Box -->
+    <div class="card-box">
+      <img src="naruto.jpeg" alt="Your Photo" />
+      <h3>Aditya Mulawarman</h3>
+      <div class="typing-demo">
+        Selamat datang diweb ini web yang bisa mengontrol apapun
+      </div>
+    </div>
+    <br />
+    <div class="sensor-wrapper">
+      <div class="card-box">
+        <div class="sensor-data">
+          <div id="conditionIcon"></div>
+          <!-- Tambahkan ini -->
+          <strong>Cuaca:</strong> <span id="conditionID">--</span>
+        </div>
+        <div class="sensor-data">
+          <strong>Suhu:</strong> <span id="tempID">--</span> °C
+        </div>
+        <div class="sensor-data">
+          <strong>Kelembaban:</strong> <span id="humidID">--</span> %
+        </div>
+        <div class="sensor-data" id="weatherIcon"></div>
+      </div>
+
+      <div class="card-box">
+        <div class="sensor-data">
+          <strong>Jarak:</strong> <span id="nilaisuhu">--</span>
+        </div>
+      </div>
+
+      <div class="card-box">
+        <h3>LED Control</h3>
+        <div class="toggle-container">
+          <label class="switch">
+            <input type="checkbox" id="checkbox-1" class="cb" />
+            <span class="slider"></span>
+            <span class="label-text"></span>
+          </label>
+
+          <label class="switch">
+            <input type="checkbox" id="checkbox-2" class="cb" />
+            <span class="slider"></span>
+            <span class="label-text"></span>
+          </label>
+
+          <label class="switch">
+            <input type="checkbox" id="checkbox-3" class="cb" />
+            <span class="slider"></span>
+            <span class="label-text"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        onValue,
+        set,
+      } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyCUhFb4_JivisOL814sTR5Pt0M9xJXAKSQ",
+        authDomain: "fir-arduino-2e8a9.firebaseapp.com",
+        databaseURL:
+          "https://fir-arduinoled-e2f58-default-rtdb.asia-southeast1.firebasedatabase.app/",
+        projectId: "fir-arduino-2e8a9",
+        storageBucket: "fir-arduino-2e8a9.firebasestorage.app",
+        messagingSenderId: "807998207940",
+        appId: "1:807998207940:web:eee3bfe45d5339c7801691",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+      const ledRef = ref(db, "dataLED");
+      const dhtRef = ref(db, "dataDHT");
+      const usRef = ref(db, "Sensor");
+
+      function updateWeatherCondition(tempValue) {
+        const conditionElement = document.getElementById("conditionID");
+        const conditionIcon = document.getElementById("conditionIcon");
+
+        if (!conditionElement || !conditionIcon) return;
+
+        if (tempValue <= 0) {
+          conditionElement.textContent = "Sangat Dingin";
+          conditionIcon.textContent = "❄️";
+        } else if (tempValue > 0 && tempValue < 19) {
+          conditionElement.textContent = "Dingin";
+          conditionIcon.textContent = "🥶";
+        } else if (tempValue >= 20 && tempValue < 31) {
+          conditionElement.textContent = "Sedang";
+          conditionIcon.textContent = "🌤️";
+        } else {
+          conditionElement.textContent = "Panas";
+          conditionIcon.textContent = "🔥";
+        }
+      }
+
+      function updateWeather(tempValue, humidValue) {
+        const temperatureElement = document.getElementById("tempID");
+        const humidElement = document.getElementById("humidID");
+        const iconElement = document.getElementById("weatherIcon");
+
+        if (!temperatureElement || !humidElement || !iconElement) return;
+
+        temperatureElement.innerHTML = `${tempValue}`;
+        humidElement.textContent = `${humidValue}`;
+
+        let iconClass = "wi wi-tornado";
+        if (humidValue < 20) {
+          iconClass = "wi wi-day-sunny";
+        } else if (humidValue <= 50) {
+          iconClass = "wi wi-day-fog";
+        } else {
+          iconClass = "wi wi-day-thunderstorm";
+        }
+
+        iconElement.innerHTML = `<i class="${iconClass}"></i>`;
+
+        updateWeatherCondition(tempValue);
+      }
+
+      onValue(ledRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const led = snapshot.val();
+          Object.keys(led).forEach((key, index) => {
+            const checkbox = document.getElementById(`checkbox-${index + 1}`);
+            if (checkbox) {
+              checkbox.checked = led[key] === 1;
+            }
+          });
+          console.log("Status LED berubah:", led);
+        } else {
+          console.log("Data LED tidak ditemukan");
+        }
+      });
+
+      onValue(
+        dhtRef,
+        (snapshot) => {
+          if (snapshot.exists()) {
+            const data = snapshot.val();
+            let temperature = data.t;
+            let humidity = data.h;
+            console.log("Temperature update:", temperature);
+            console.log("Humidity update:", humidity);
+            updateWeather(temperature, humidity);
+          } else {
+            console.log("Data DHT tidak ditemukan");
+          }
+        },
+        (error) => {
+          console.log("Error membaca data DHT:", error);
+        }
+      );
+
+      onValue(usRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          console.log("Jarak berubah:", data.jarak);
+
+          const percentageElement = document.getElementById("nilaisuhu");
+          if (percentageElement) {
+            percentageElement.textContent = `${data.jarak} Cm`;
+          }
+        } else {
+          console.log("Data Ultrasonic tidak ditemukan");
+        }
+      });
+
+      window.toggleLED = () => {
+        const ledState = [1, 2, 3].map((i) =>
+          document.getElementById(`checkbox-${i}`).checked ? 1 : 0
+        );
+
+        set(ledRef, {
+          led1: ledState[0],
+          led2: ledState[1],
+          led3: ledState[2],
+        })
+          .then(() => console.log("LED state updated in Firebase"))
+          .catch(() => console.log("Gagal memperbarui status LED"));
+      };
+
+      document.querySelectorAll(".cb").forEach((checkbox, index) => {
+        checkbox.addEventListener("change", () => {
+          window.toggleLED();
+        });
+      });
+    </script>
+  </body>
+</html>

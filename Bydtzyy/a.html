@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sensor Monitoring Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .card {
+            margin-bottom: 20px;
+        }
+
+        .checkbox-wrapper-41 {
+            --size: 50px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .checkbox-wrapper-41 input[type="checkbox"] {
+      
+            width: var(--size);
+            height: calc(var(--size) / 2);
+            background-color: #fff;
+            border: 3px solid #222;
+            border-radius: 30px 100px 100px 100px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            outline: none;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.5s;
+        }
+
+        .checkbox-wrapper-41 input[type="checkbox"]::before {
+            content: "";
+            position: absolute;
+            width: calc(var(--size) / 2);
+            height: calc(var(--size) / 2);
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%) scale(0.7);
+            border: 3px solid #222;
+            border-radius: 30px 100px 100px 100px;
+            background-color: #fde881;
+            box-sizing: border-box;
+            transition: all 0.5s;
+        }
+
+        .checkbox-wrapper-41 input[type="checkbox"]:checked {
+            background-color: #fde881;
+            border-radius: 100px 100px 30px 100px;
+        }
+
+        .checkbox-wrapper-41 input[type="checkbox"]:checked::before {
+            left: 50%;
+            background-color: #ede7ec;
+            border-radius: 100px 100px 30px 100px;
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark bg-primary mb-4">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">Sensor Monitoring & LED Control
+            </span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <!-- Temperature Card -->
+            <div class="col-md-4">
+                <div class="card text-white bg-danger">
+                    <div class="card-header">Temperature</div>
+                    <div class="card-body">
+                        <h5 class="card-title" id="tempID">-- °C</h5>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Humidity Card -->
+            <div class="col-md-4">
+                <div class="card text-white bg-info">
+                    <div class="card-header">Humidity</div>
+                    <div class="card-body">
+                        <h5 class="card-title" id="humidID">-- %</h5>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ultrasonic Card -->
+            <div class="col-md-4">
+                <div class="card text-white bg-success">
+                    <div class="card-header">Ultrasonic Distance</div>
+                    <div class="card-body">
+                        <h5 class="card-title" id="nilaisuhu">-- cm</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- LED Control -->
+        <div class="row mt-4">
+            <div class="col-md-6 offset-md-3">
+                <div class="card text-center">
+                    <div class="card-header bg-warning text-dark">LED Control</div>
+                    <div class="card-body d-flex justify-content-between p-3">
+
+                        <!-- LED 1 -->
+                        <div class="checkbox-wrapper-41 mb-3">
+                            <input type="checkbox" id="checkbox-1" onchange="toggleLED()" />
+                            <label class="form-check-label" for="checkbox-1">LED 1</label>
+                        </div>
+
+                        <!-- LED 2 -->
+                        <div class="checkbox-wrapper-41 mb-3">
+                            <input type="checkbox" id="checkbox-2" onchange="toggleLED()" />
+                            <label class="form-check-label" for="checkbox-2">LED 2</label>
+                        </div>
+
+                        <!-- LED 3 -->
+                        <div class="checkbox-wrapper-41 mb-3">
+                            <input type="checkbox" id="checkbox-3" onchange="toggleLED()" />
+                            <label class="form-check-label" for="checkbox-3">LED 3</label>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase + Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+    
+        const firebaseConfig = {
+            apiKey: "AIzaSyBBQ8hU_p-CLiL3FnGmzdNHUXYqmDD_lhU",
+            authDomain: "fir-arduinoled-6a3b6.firebaseapp.com",
+            databaseURL: "https://fir-arduinoled-6a3b6-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "fir-arduinoled-6a3b6",
+            storageBucket: "fir-arduinoled-6a3b6.firebasestorage.app",
+            messagingSenderId: "351410160251",
+            appId: "1:351410160251:web:3db748b34a025bb4c258de",
+            measurementId: "G-WXES8LS3VH"
+        };
+    
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const ledRef = ref(db, "dataLED");
+        const dhtRef = ref(db, "dataDHT");
+        const usRef = ref(db, "Sensor");
+    
+        function updateWeather(tempValue, humidValue) {
+            document.getElementById("tempID").innerHTML = `${tempValue} °C`;
+            document.getElementById("humidID").textContent = `${humidValue} %`;
+        }
+    
+        onValue(ledRef, (snapshot) => {
+            if (snapshot.exists()) {
+                const led = snapshot.val();
+                for (let i = 1; i <= 3; i++) {
+                    const checkbox = document.getElementById(`checkbox-${i}`);
+                    if (checkbox) checkbox.checked = led[`led${i}`] === 1;
+                }
+            }
+        });
+    
+        onValue(dhtRef, (snapshot) => {
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                updateWeather(data.t, data.h);
+            }
+        });
+    
+        onValue(usRef, (snapshot) => {
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                document.getElementById("nilaisuhu").textContent = `${data.jarak} cm`;
+            }
+        });
+    
+        window.toggleLED = () => {
+            const ledState = [1, 2, 3].map(i =>
+                document.getElementById(`checkbox-${i}`).checked ? 1 : 0
+            );
+    
+            set(ledRef, {
+                led1: ledState[0],
+                led2: ledState[1],
+                led3: ledState[2],
+            }).then(() => console.log("LED state updated"))
+                .catch((err) => console.log("Gagal update LED:", err));
+        };
+    </script>
+    
+</body>
+
+</html>
